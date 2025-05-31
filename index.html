@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4-Kilo Jobs and Tenders</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0a1a2f; /* dark navy blue */
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #ffdd57;
+    }
+    form, .job-posting {
+      background-color: #1c2e4a;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005bb5;
+    }
+    .apply-button {
+      display: inline-block;
+      margin-top: 10px;
+      background-color: #28a745;
+      padding: 8px 16px;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .apply-button:hover {
+      background-color: #1e7e34;
+    }
+    .remove-button {
+      margin-top: 10px;
+      background-color: #dc3545;
+      padding: 8px 16px;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .remove-button:hover {
+      background-color: #a71d2a;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>4-Kilo Jobs and Tenders</h1>
+
+  <h2>Post a Job or Tender</h2>
+  <form id="jobForm">
+    <label for="title">Title:</label>
+    <input type="text" id="title" required />
+
+    <label for="category">Category:</label>
+    <select id="category" required>
+      <option value="Accounting / Finance">Accounting / Finance</option>
+      <option value="Admin / Clerical">Admin / Clerical</option>
+      <option value="Agriculture">Agriculture</option>
+      <option value="Banking / Insurance">Banking / Insurance</option>
+      <option value="Business Development">Business Development</option>
+      <option value="Construction / Real Estate">Construction / Real Estate</option>
+      <option value="Consultancy">Consultancy</option>
+      <option value="Creative / Design">Creative / Design</option>
+      <option value="Customer Service">Customer Service</option>
+      <option value="Education / Training">Education / Training</option>
+      <option value="Engineering">Engineering</option>
+      <option value="Health / Medical">Health / Medical</option>
+      <option value="Hospitality / Travel">Hospitality / Travel</option>
+      <option value="Human Resources">Human Resources</option>
+      <option value="IT / Tech">IT / Tech</option>
+      <option value="Legal / Law">Legal / Law</option>
+      <option value="Logistics / Supply Chain">Logistics / Supply Chain</option>
+      <option value="Manufacturing / Production">Manufacturing / Production</option>
+      <option value="Marketing / Advertising">Marketing / Advertising</option>
+      <option value="NGO / Nonprofit">NGO / Nonprofit</option>
+      <option value="Procurement">Procurement</option>
+      <option value="Project Management">Project Management</option>
+      <option value="Research / Development">Research / Development</option>
+      <option value="Sales / Retail">Sales / Retail</option>
+      <option value="Security / Safety">Security / Safety</option>
+      <option value="Social Science">Social Science</option>
+      <option value="Telecommunications">Telecommunications</option>
+      <option value="Transportation">Transportation</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="description">Description:</label>
+    <textarea id="description" rows="4" required></textarea>
+
+    <label for="deadline">Deadline:</label>
+    <input type="date" id="deadline" required />
+
+    <label for="applyLink">Application Link or Email:</label>
+    <input type="text" id="applyLink" placeholder="https://company.com/apply or email@example.com" required />
+
+    <button type="submit">Post Job/Tender</button>
+  </form>
+
+  <h2>Latest Posts</h2>
+  <div id="postsContainer"></div>
+
+  <script>
+    let postCounter = 0; // Unique post IDs
+
+    document.getElementById('jobForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value;
+      const category = document.getElementById('category').value;
+      const description = document.getElementById('description').value;
+      const deadline = document.getElementById('deadline').value;
+      const applyLink = document.getElementById('applyLink').value;
+
+      const isEmail = applyLink.includes('@') && !applyLink.includes('http');
+
+      const linkFormatted = isEmail
+        ? `<a href="mailto:${applyLink}" class="apply-button">Apply via Email</a>`
+        : `<a href="${applyLink}" target="_blank" class="apply-button">Apply Now</a>`;
+
+      const postId = `post-${postCounter++}`;
+
+      const jobHTML = `
+        <div class="job-posting" id="${postId}">
+          <h3>${title}</h3>
+          <p><strong>Category:</strong> ${category}</p>
+          <p>${description}</p>
+          <p><strong>Deadline:</strong> ${deadline}</p>
+          ${linkFormatted}
+          <br>
+          <button class="remove-button" onclick="removePost('${postId}')">Remove</button>
+        </div>
+      `;
+
+      document.getElementById('postsContainer').innerHTML += jobHTML;
+
+      document.getElementById('jobForm').reset();
+    });
+
+    function removePost(id) {
+      const postElement = document.getElementById(id);
+      if (postElement) {
+        postElement.remove();
+      }
+    }
+  </script>
+
+</body>
+</html>
